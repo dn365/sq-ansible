@@ -1,6 +1,28 @@
 Zabbix监控部署文档
 ==
 
+> 整体高可用架构方案
+
+![Zabbix架构图](./img/Zabbix.jpeg)
+
+##### 高可用方案说明
+
+  -	Agent根据 物理区域、应用分组等分组信息 组成Agent单元
+  -	单元内Agent由Agent Proxy节点统一代理发送和响应Server请求
+  -	Agent数据由统一代理层VIPProxy接收
+  -	VIPProxy将数据分发到后端正常的Zabbix Server节点
+  -	Zabbix Server节点之间文件做相互同步
+  -	MySQL数据库做主从复制
+  -	由MySQL Proxy 统一代理MySQL Master和Slave节点, 对外部应用提供接口
+  -	MySQL Proxy实现应用层的读写分离
+
+##### 方案优点
+  + 前后端通过Proxy分离,架构解耦
+  + 快速实现负载均衡、无缝迁移、分布式扩展等
+  + Server节点可更具监控需求实现横向扩展
+  + 数据库通过Proxy实现多节点高可用
+  + 通过数据库Proxy实现应用层的读写分离,提高数据库处理性能
+
 > Zabbix Server 安装
 
 1.  安装环境
@@ -137,3 +159,7 @@ Zabbix监控部署文档
 
   #登录oneproxy，执行查询发现走的是从库，执行插入语句走的主库，证明配置正常
   ```
+
+
+------  
+后续整理补全......
