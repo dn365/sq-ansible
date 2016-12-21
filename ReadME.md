@@ -99,7 +99,7 @@ Zabbix监控部署文档
   #分别在主库和备库上执行进行授权,确保在主库192.168.1.2可以连接主库和备库的zabbix库：
   $>grant all privileges on zabbix.* to 'zabbix'@'192.168.1.2' identified by 'zabbix';
 
-  #配置oneproxy
+  #配置oneproxy (请参考conf/oneproxy.conf)
   #更改 /usr/local/oneproxy/proxy.conf，如下:
   $>cat proxy.conf
 
@@ -159,7 +159,19 @@ Zabbix监控部署文档
 
   #登录oneproxy，执行查询发现走的是从库，执行插入语句走的主库，证明配置正常
   ```
+> Haproxy 安装以及配置
 
+  ```
+  # 下载安装文件
+  $>git clone https://github.com/dn365/sq-ansible.git
 
-------  
-后续整理补全......
+  # 安装haproxy
+  $>cd sq-ansible/roles/ansible-role-haproxy
+  $>ansible-playbook -i "localhost," -c local playbook.yml
+
+  # 等待执行完成, 查看服务状态
+  $>ps -ef|grep haproxy
+
+  # 替换haproxy.cfg配置文件
+  # 请参考conf/haproxy.cfg
+  ```
